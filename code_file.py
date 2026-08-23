@@ -171,6 +171,30 @@ class GomokuAgent:
                     break
 
       return min_eval
+
+
+  def _get_candidate_moves(self, board, rows, cols, distance=1):
+        '''Identifies all empty cells adjacent to existing stones to narrow search space, defaulting to the center cell if the board is empty'''
+        candidates = set()
+        has_stone = False
+
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] != self.blank_symbol:
+                    has_stone = True
+                    for dr in range(-distance, distance + 1):
+                        for dc in range(-distance, distance + 1):
+                            nr, nc = r + dr, c + dc
+                            if 0 <= nr < rows and 0 <= nc < cols:
+                                if board[nr][nc] == self.blank_symbol:
+                                    candidates.add((nr, nc))
+
+        if not has_stone:
+            return [(rows // 2, cols // 2)]
+
+        return list(candidates)
+
+
   def _search_board(self, board,rows, cols):
     #search board value combin pattern scores and positional matrix bias 
     agent_score = self.score_patterens(board, self.agent_symbol, rows, cols)
