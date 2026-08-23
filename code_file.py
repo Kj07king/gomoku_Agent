@@ -46,7 +46,7 @@ class GomokuAgent:
           
         #Alpha-beta Pruning as deep search algorithm
          best_move = opponents[0]
-         opponents = self.order_moves(board,opponentss, rows, cols)
+         opponents = self.order_moves(board,opponents, rows, cols)
          for depth in range(1, 6):
            if time.time() - start_time > self.time_limit:
              break
