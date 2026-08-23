@@ -129,10 +129,10 @@ class GomokuAgent:
        if not opponents:
          return 0
         
-       opponents = self._order_moves()board, opponentss, rows, cols)
+       opponents = self._order_moves()board, opponents, rows, cols)
        if is_maximizing:
          max_eval = -float('inf')
-         for r, c in opponentss[:20]:
+         for r, c in opponents[:20]:
            board[r][c] = self.agent_symbol
 
 
@@ -175,7 +175,7 @@ class GomokuAgent:
 
   def _get_opponents_moves(self, board, rows, cols, distance=1):
         '''Identifies all empty cells adjacent to existing stones to narrow search space, defaulting to the center cell if the board is empty'''
-        opponentss = set()
+        opponents = set()
         has_stone = False
 
         for r in range(rows):
@@ -187,14 +187,14 @@ class GomokuAgent:
                             nr, nc = r + dr, c + dc
                             if 0 <= nr < rows and 0 <= nc < cols:
                                 if board[nr][nc] == self.blank_symbol:
-                                    opponentss.add((nr, nc))
+                                    opponents.add((nr, nc))
 
         if not has_stone:
             return [(rows // 2, cols // 2)]
 
-        return list(opponentss)
+        return list(opponents)
 
-  def _order_moves(self, board, opponentss, rows, cols):
+  def _order_moves(self, board, opponents, rows, cols):
         '''Sorts opponents moves in descending order by combining adjacent stone density 
            and central bias to evaluate promising paths first and maximize Alpha-Beta's pruning efficiency'''
         def score_move(pos):
@@ -215,7 +215,7 @@ class GomokuAgent:
 
             return adjacent_score + position_bias
 
-        return sorted(opponentss, key=score_move, reverse=True)
+        return sorted(opponents, key=score_move, reverse=True)
 
 
   def _check_win(self, board, row, col, symbol, rows, cols):
