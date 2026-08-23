@@ -25,7 +25,7 @@ class GomokuAgent:
         opponents = self.opponents_move(board, rows, cols, distance=1)
 
         #Opening move: starts with the center of the board
-        if not candidates:
+        if not opponents:
           return(rows //2, cols // 2)
 
         # check if it is a winning move first depth   
@@ -43,3 +43,35 @@ class GomokuAgent:
             board[r][c] = self.blank_symbol
             return (r, c)
           board[r][c] = self.blank_symbol
+          
+        #Alpha-beta Pruning as deep search algorithm
+         best_move = opponents[0]
+         opponents = self.order_moves(board,candidates, rows, cols)
+         for depth in range(1, 6):
+           if time.time() - start_time > self.time_limit:
+             break
+            current_best = None
+            best_score = -float('inf')
+            alpha = -float('inf')
+            beta = float('inf')
+           
+            # search top candidate moves
+           for r, c in candidates[:30]:
+             if time.time() - start_time > self.time_limit:
+               break
+               
+              board[r][c] = self.agent_symbol
+              score = self._alpha_beta(
+                  board, depth - 1, alpha, beta, False, start_time, rows, cols inital_depth=depth )
+              board[r][c] = self.blank_symbol
+              
+              if score > best_score:
+                best_score = score
+                current_best = (r,c)
+
+              alpha = max(alpha, best_score)
+             if time.time()- start_time <= self.time_limit and current_best:
+               best_move = current_best
+             else:
+               break
+          return best_move 
