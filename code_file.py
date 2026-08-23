@@ -22,7 +22,7 @@ class GomokuAgent:
         self._auto_detect_symbols(board, rows, cols)
         
         #makes a move within 1 distance of the opponents move
-        opponents = self.opponents_move(board, rows, cols, distance=1)
+        opponents = self._get_opponents_move(board, rows, cols, distance=1)
 
         #Opening move: starts with the center of the board
         if not opponents:
@@ -38,7 +38,7 @@ class GomokuAgent:
 
         # check the opponets move and if blocks the chance to win 
         for r, c in opponents:
-          board[r][c] = self.opponent_symbole
+          board[r][c] = self.opponent_symbol
           if self._check_win(board, r,c, self.opponent_symbol,rows, cols):
             board[r][c] = self.blank_symbol
             return (r, c)
