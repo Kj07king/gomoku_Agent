@@ -218,6 +218,23 @@ class GomokuAgent:
         return sorted(candidates, key=score_move, reverse=True)
 
 
+  def _check_win(self, board, row, col, symbol, rows, cols):
+        '''Checks and scans across all the four directions and the diagonals from the selected move to check if it meets the requirement to
+           to form at least five consecutive placements to win the game'''
+        directions = [(0, 1), (1, 0), (1, 1), (1, -1)]
+        for dr, dc in directions:
+            count = 1
+            for direction in (1, -1):
+                r, c = row + dr * direction, col + dc * direction
+                while 0 <= r < rows and 0 <= c < cols and board[r][c] == symbol:
+                    count += 1
+                    r += dr * direction
+                    c += dc * direction
+            if count >= 5:
+                return True
+        return False
+
+
   def _search_board(self, board,rows, cols):
     #search board value combin pattern scores and positional matrix bias 
     agent_score = self.score_patterens(board, self.agent_symbol, rows, cols)
