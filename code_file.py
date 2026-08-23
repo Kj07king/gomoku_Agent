@@ -19,7 +19,7 @@ class GomokuAgent:
             self.position_matrix = self._generate_position_matrix(rows, cols)
         
         #symbol dectection can play as X or 0
-        self.detect_symbols(board, rows, cols)
+        self._auto_detect_symbols(board, rows, cols)
         
         #makes a move within 1 distance of the opponents move
         opponents = self.opponents_move(board, rows, cols, distance=1)
@@ -118,7 +118,7 @@ class GomokuAgent:
 
     def _alpha_beta(self, board,depth, alpha, beta, is_maximizing, start_time, rows, cols, initial_depth):
       #Add alpha beat search and add depth penalties for move distacne 
-      ply = initial-depth - depth # distance from the root node 
+      ply = initial_depth - depth # distance from the root node 
        
       if depth == 0 or time.time() - start_time > self.time_limit:
         #discount leaf heuristic score slightly based on ply (prefer immediate position advantage)
