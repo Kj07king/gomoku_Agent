@@ -122,7 +122,7 @@ class GomokuAgent:
        
       if depth == 0 or time.time() - start_time > self.time_limit:
         #discount leaf heuristic score slightly based on ply (prefer immediate position advantage)
-        raw_eval = self._evaluate_board(board, rows, cols)
+        raw_eval = self._search_board(board, rows, cols)
         return int(raw_eval * (0.95 ** ply))
 
        opponents = self.get_oppoents_moves(board, rows, cols, distance =1)
@@ -237,7 +237,7 @@ class GomokuAgent:
 
   def _search_board(self, board,rows, cols):
     #search board value combin pattern scores and positional matrix bias 
-    agent_score = self.score_patterens(board, self.agent_symbol, rows, cols)
+    agent_score = self.score_patterns(board, self.agent_symbol, rows, cols)
     opp_score = self._score_patterns(board, self.opponent_symbol, rows, cols)
     
     pos_score = 0
