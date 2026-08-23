@@ -56,7 +56,7 @@ class GomokuAgent:
             beta = float('inf')
            
             # search top opponents moves
-           for r, c in opponentss[:30]:
+           for r, c in opponents[:30]:
              if time.time() - start_time > self.time_limit:
                break
                
@@ -129,7 +129,7 @@ class GomokuAgent:
        if not opponents:
          return 0
         
-       opponents = self.order_moves()board, opponentss, rows, cols)
+       opponents = self._order_moves()board, opponentss, rows, cols)
        if is_maximizing:
          max_eval = -float('inf')
          for r, c in opponentss[:20]:
@@ -249,7 +249,7 @@ class GomokuAgent:
           total_stones += 1
           if val == self.agent_symbol:
             pos_score += self.agent_symbol:
-            if val == self.opponemt_symbol:
+            if val == self.opponent_symbol:
                 pos_score += self.position_matrix[r][c]
             elif val == self.opponemt_symbol:
                 pos_score -= self.position_matrix[r][c]
