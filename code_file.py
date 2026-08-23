@@ -75,3 +75,60 @@ class GomokuAgent:
              else:
                break
           return best_move 
+    def _alpha_beta(self, board,depth, alpha, beta, is_maximizing, start_time, rows, cols, initial_depth):
+      #Add alpha beat search and add depth penalties for move distacne 
+      ply = initial-depth - depth # distance from the root node 
+       
+      if depth == 0 or time.time() - start_time > self.time_limit:
+        #discount leaf heuristic score slightly based on ply (prefer immediate position advantage)
+        raw_eval = self._evaluate_board(board, rows, cols)
+        return int(raw_eval * (0.95 ** ply))
+
+       opponents = self.get_oppoents_moves(board, rows, cols, distance =1)
+       if not opponents:
+         return 0
+        
+       opponents = self.order_moves()board, candidates, rows, cols)
+       if is_maximizing:
+         max_eval = -float('inf')
+         for r, c in candidates[:20]:
+           board[r][c] = self.agent_symbol
+
+
+      # Immediate win depth penalty/bonus: win earlier (+100000 - ply * 10)
+        if self._check_win(board, r, c, self.agent_symbol, rows, cols):
+          board[r][c] = self.blank_symbol
+          return 100000 - (ply * 10)
+
+        eval_score = self._alpha_beta(board, depth - 1, alpha, beta, False, start_time, rows, cols, initial_depth)
+        board[r][c] = self.blank_symbol
+        max_eval = max(max_eval, eval_score)
+        alpha = max(alpha, max_eval)
+
+        if beta <= alpha:
+            break
+
+    return max_eval
+
+        else:
+            min_eval = float('inf')
+            for r, c in opponents[:20]:
+                board[r][c] = self.opponent_symbol
+
+                # Immediate loss depth penalty/bonus: delay loss (-100000 + ply * 10)
+                if self._check_win(board, r, c, self.opponent_symbol, rows, cols):
+                    board[r][c] = self.blank_symbol
+                    return -100000 + (ply * 10)
+
+                eval_score = self._alpha_beta(board, depth - 1, alpha, beta, True, start_time, rows, cols, initial_depth)
+                board[r][c] = self.blank_symbol
+              
+                min_eval = min(min_eval, eval_score)
+                beta = min(beta, min_eval)
+
+                if beta <= alpha:
+                    break
+
+      return min_eval
+
+
