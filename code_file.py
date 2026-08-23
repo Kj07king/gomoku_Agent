@@ -254,9 +254,9 @@ class GomokuAgent:
             elif val == self.opponemt_symbol:
                 pos_score -= self.position_matrix[r][c]
       multiplier = 1.1 if total_stones > 100 else 1.3
-      pattern_eval = agent_scoe - int(opp_score * multiplier)
+      pattern_eval = agent_score - int(opp_score * multiplier)
 
-      return pattern_evsl + pos_score  
+      return pattern_eval + pos_score  
 
 
   def _score_patterns(self, board, symbol, rows, cols):
@@ -268,7 +268,7 @@ class GomokuAgent:
             for c in range(cols):
                 if board[r][c] == symbol:
                     for dr, dc in directions:
-                        score += self._search_line_one_direction(board, r, c, dr, dc, symbol, rows, cols)
+                        score += self._evaluate_line_one_direction(board, r, c, dr, dc, symbol, rows, cols)
 
         return score
 
