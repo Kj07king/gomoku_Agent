@@ -257,8 +257,9 @@ class GomokuAgent:
       pattern_eval = agent_scoe - int(opp_score * multiplier)
 
       return pattern_evsl + pos_score  
-    
-def _score_patterns(self, board, symbol, rows, cols):
+
+
+  def _score_patterns(self, board, symbol, rows, cols):
         #Scores patterns once per sequence to avoid over-counting.
         score = 0
         directions = [(0, 1), (1, 0), (1, 1), (1, -1)]
@@ -270,3 +271,35 @@ def _score_patterns(self, board, symbol, rows, cols):
                         score += self._search_line_one_direction(board, r, c, dr, dc, symbol, rows, cols)
 
         return score
+
+  def _evaluate_line_one_direction(self, board, r, c, dr, dc, symbol, rows, cols):
+        '''It evaluates a continueous sequence of stones starting from its originto prevent counting twice
+           THe scoring threats are based on the line strenght and any available open endpoints'''
+        prev_r, prev_c = r - dr, c - dc
+        if 0 <= prev_r < rows and 0 <= prev_c < cols and board[prev_r][prev_c] == symbol:
+            return 0
+
+        count = 0
+        open_ends = 0
+
+        if 0 <= prev_r < rows and 0 <= prev_c < cols and board[prev_r][prev_c] == self.blank_symbol:
+            open_ends += 1
+
+        curr_r, curr_c = r, c
+        while 0 <= curr_r < rows and 0 <= curr_c < cols and board[curr_r][curr_c] == symbol:
+            count += 1
+            curr_r += dr
+            curr_c += dc
+
+        if 0 <= curr_r < rows and 0 <= curr_c < cols and board[curr_r][curr_c] == self.blank_symbol:
+            open_ends += 1
+
+        if count >= 5:
+            return 100000
+        elif count == 4:
+            return 50000 if open_ends >= 2 else 5000
+        elif count == 3:
+            return 1000 if open_ends >= 2 else 100
+        elif count == 2:
+            return 10 if open_ends >= 2 else 0
+        return 0
