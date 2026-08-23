@@ -152,4 +152,16 @@ class GomokuAgent:
       pattern_eval = agent_scoe - int(opp_score * multiplier)
 
       return pattern_evsl + pos_score  
+    
+def _score_patterns(self, board, symbol, rows, cols):
+        #Scores patterns once per sequence to avoid over-counting.
+        score = 0
+        directions = [(0, 1), (1, 0), (1, 1), (1, -1)]
 
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == symbol:
+                    for dr, dc in directions:
+                        score += self._search_line_one_direction(board, r, c, dr, dc, symbol, rows, cols)
+
+        return score
