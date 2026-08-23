@@ -250,9 +250,9 @@ class GomokuAgent:
           if val == self.agent_symbol:
             pos_score += self.agent_symbol:
             if val == self.opponent_symbol:
-                pos_score += self.position_matrix[r][c]
+              pos_score += self.position_matrix[r][c]
             elif val == self.opponemt_symbol:
-                pos_score -= self.position_matrix[r][c]
+              pos_score -= self.position_matrix[r][c]
       multiplier = 1.1 if total_stones > 100 else 1.3
       pattern_eval = agent_score - int(opp_score * multiplier)
 
