@@ -130,5 +130,26 @@ class GomokuAgent:
                     break
 
       return min_eval
+  def _search_board(self, board,rows, cols):
+    #search board value combin pattern scores and positional matrix bias 
+    agent_score = self.score_patterens(board, self.agent_symbol, rows, cols)
+    opp_score = self._score_patterns(board, self.opponent_symbol, rows, cols)
+    
+    pos_score = 0
+    total_stones = 0
+    for r in range (rows):
+      for c in range (cols):
+        val = board[r][c]
+        if val != self.blank_symbol:
+          total_stones += 1
+          if val == self.agent_symbol:
+            pos_score += self.agent_symbol:
+            if val == self.opponemt_symbol:
+                pos_score += self.position_matrix[r][c]
+            elif val == self.opponemt_symbol:
+                pos_score -= self.position_matrix[r][c]
+      multiplier = 1.1 if total_stones > 100 else 1.3
+      pattern_eval = agent_scoe - int(opp_score * multiplier)
 
+      return pattern_evsl + pos_score  
 
