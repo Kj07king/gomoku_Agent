@@ -75,6 +75,25 @@ class GomokuAgent:
              else:
                break
           return best_move 
+
+
+
+    def _generate_position_matrix(self, rows, cols):
+      '''Generates a concentric heatmap matrix assigning higher values to central cells, 
+           used to prioritize move ordering and reward controlling the board's center.'''
+        center_r, center_c = rows // 2, cols // 2
+        max_dist = max(center_r, center_c) + 1
+        matrix = []
+        for r in range(rows):
+            row = []
+            for c in range(cols):
+                dist = max(abs(r - center_r), abs(c - center_c))
+                val = max_dist - dist
+                row.append(val)
+            matrix.append(row)
+        return matrix
+
+
     def _alpha_beta(self, board,depth, alpha, beta, is_maximizing, start_time, rows, cols, initial_depth):
       #Add alpha beat search and add depth penalties for move distacne 
       ply = initial-depth - depth # distance from the root node 
