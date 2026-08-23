@@ -194,6 +194,29 @@ class GomokuAgent:
 
         return list(candidates)
 
+  def _order_moves(self, board, candidates, rows, cols):
+        '''Sorts candidate moves in descending order by combining adjacent stone density 
+           and central bias to evaluate promising paths first and maximize Alpha-Beta's pruning efficiency'''
+        def score_move(pos):
+            r, c = pos
+            position_bias = self.position_matrix[r][c]
+
+            adjacent_score = 0
+            for dr in [-1, 0, 1]:
+                for dc in [-1, 0, 1]:
+                    if dr == 0 and dc == 0:
+                        continue
+                    nr, nc = r + dr, c + dc
+                    if 0 <= nr < rows and 0 <= nc < cols:
+                        if board[nr][nc] == self.agent_symbol:
+                            adjacent_score += 3
+                        elif board[nr][nc] == self.opponent_symbol:
+                            adjacent_score += 2
+
+            return adjacent_score + position_bias
+
+        return sorted(candidates, key=score_move, reverse=True)
+
 
   def _search_board(self, board,rows, cols):
     #search board value combin pattern scores and positional matrix bias 
