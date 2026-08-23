@@ -22,7 +22,7 @@ class GomokuAgent:
         self._auto_detect_symbols(board, rows, cols)
         
         #makes a move within 1 distance of the opponents move
-        opponents = self._get_opponents_move(board, rows, cols, distance=1)
+        opponents = self._get_opponents_moves(board, rows, cols, distance=1)
 
         #Opening move: starts with the center of the board
         if not opponents:
@@ -46,7 +46,7 @@ class GomokuAgent:
           
         #Alpha-beta Pruning as deep search algorithm
          best_move = opponents[0]
-         opponents = self.order_moves(board,opponents, rows, cols)
+         opponents = self._order_moves(board,opponents, rows, cols)
          for depth in range(1, 6):
            if time.time() - start_time > self.time_limit:
              break
@@ -125,7 +125,7 @@ class GomokuAgent:
         raw_eval = self._search_board(board, rows, cols)
         return int(raw_eval * (0.95 ** ply))
 
-       opponents = self.get_oppoents_moves(board, rows, cols, distance =1)
+       opponents = self._get_opponents_moves(board, rows, cols, distance =1)
        if not opponents:
          return 0
         
@@ -237,7 +237,7 @@ class GomokuAgent:
 
   def _search_board(self, board,rows, cols):
     #search board value combin pattern scores and positional matrix bias 
-    agent_score = self.score_patterns(board, self.agent_symbol, rows, cols)
+    agent_score = self._score_patterns(board, self.agent_symbol, rows, cols)
     opp_score = self._score_patterns(board, self.opponent_symbol, rows, cols)
     
     pos_score = 0
@@ -251,7 +251,7 @@ class GomokuAgent:
             pos_score += self.agent_symbol
             if val == self.opponent_symbol:
               pos_score += self.position_matrix[r][c]
-            elif val == self.opponemt_symbol:
+            elif val == self.opponent_symbol:
               pos_score -= self.position_matrix[r][c]
       multiplier = 1.1 if total_stones > 100 else 1.3
       pattern_eval = agent_score - int(opp_score * multiplier)
