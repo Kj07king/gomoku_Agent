@@ -129,7 +129,7 @@ class GomokuAgent:
        if not opponents:
          return 0
         
-       opponents = self._order_moves()board, opponents, rows, cols)
+       opponents = self._order_moves(board, opponents, rows, cols)
        if is_maximizing:
          max_eval = -float('inf')
          for r, c in opponents[:20]:
@@ -248,7 +248,7 @@ class GomokuAgent:
         if val != self.blank_symbol:
           total_stones += 1
           if val == self.agent_symbol:
-            pos_score += self.agent_symbol:
+            pos_score += self.agent_symbol
             if val == self.opponent_symbol:
               pos_score += self.position_matrix[r][c]
             elif val == self.opponemt_symbol:
