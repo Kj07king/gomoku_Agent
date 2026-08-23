@@ -94,6 +94,28 @@ class GomokuAgent:
         return matrix
 
 
+    def _auto_detect_symbols(self, board, rows, cols):
+        """Counts board pieces to dynamically assign 'X' or 'O' to the agent depending on whose turn it is,
+           assuming 'X' always moves first"""
+        x_count = 0
+        o_count = 0
+
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == 'X':
+                    x_count += 1
+                elif board[r][c] == 'O':
+                    o_count += 1
+
+        if x_count > 0 or o_count > 0 or (self.agent_symbol in ['X', 'O'] and self.opponent_symbol in ['X', 'O']):
+            if x_count == o_count:
+                self.agent_symbol = 'X'
+                self.opponent_symbol = 'O'
+            else:
+                self.agent_symbol = 'O'
+                self.opponent_symbol = 'X'
+
+
     def _alpha_beta(self, board,depth, alpha, beta, is_maximizing, start_time, rows, cols, initial_depth):
       #Add alpha beat search and add depth penalties for move distacne 
       ply = initial-depth - depth # distance from the root node 
