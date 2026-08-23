@@ -27,12 +27,19 @@ class GomokuAgent:
         #Opening move: starts with the center of the board
         if not candidates:
           return(rows //2, cols // 2)
-        
+
+        # check if it is a winning move first depth   
         for r, c in opponents:
           board[r][c] = self.agent_symbole
           if self._check_win(board, r,c, self.agent_symbol,rows, cols):
             board[r][c] = self.blank_symbol
             return (r, c)
           board[r][c] = self.blank_symbol
-          
-        
+
+        # check the opponets move and if blocks the chance to win 
+        for r, c in opponents:
+          board[r][c] = self.opponent_symbole
+          if self._check_win(board, r,c, self.opponent_symbol,rows, cols):
+            board[r][c] = self.blank_symbol
+            return (r, c)
+          board[r][c] = self.blank_symbol
