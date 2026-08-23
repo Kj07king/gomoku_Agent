@@ -30,7 +30,7 @@ class GomokuAgent:
 
         # check if it is a winning move first depth   
         for r, c in opponents:
-          board[r][c] = self.agent_symbole
+          board[r][c] = self.agent_symbol
           if self._check_win(board, r,c, self.agent_symbol,rows, cols):
             board[r][c] = self.blank_symbol
             return (r, c)
